@@ -1,7 +1,17 @@
+import React, { useState } from 'react';
+import {
+  Home, TrendingUp, Film, Library, Clock, ThumbsUp, ListVideo, History, PlaySquare,
+  Gamepad2, Music, Newspaper, Trophy, GraduationCap, Settings, HelpCircle, MessageSquare,
+  ChevronDown, ChevronRight
+} from 'lucide-react';
 
-  // Desktop Sidebar
-function Sidebar(){
-      const subscribedChannels = [
+// Desktop Sidebar
+function Sidebar() {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState('home');
+  const [showSubscriptions, setShowSubscriptions] = useState(true);
+
+  const subscribedChannels = [
     { id: 1, name: 'Tech Channel', avatar: '💻', online: true },
     { id: 2, name: 'Gaming Pro', avatar: '🎮', online: false },
     { id: 3, name: 'Music World', avatar: '🎵', online: true },
@@ -37,7 +47,8 @@ function Sidebar(){
     { id: 'help', icon: HelpCircle, label: 'Help' },
     { id: 'feedback', icon: MessageSquare, label: 'Send Feedback' },
   ];
-    return (
+
+  return (
     <div className={`fixed left-0 top-16 bottom-0 bg-white border-r border-gray-200 transition-all duration-300 overflow-y-auto z-40 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
       <nav className="py-2">
         {/* Main Navigation */}
@@ -46,11 +57,10 @@ function Sidebar(){
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${
-                activeTab === item.id 
-                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600' 
+              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
+                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
                   : 'text-gray-700 hover:bg-gray-100'
-              } ${!sidebarOpen && 'justify-center px-0'}`}
+                } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={24} />
               {sidebarOpen && (
@@ -80,11 +90,10 @@ function Sidebar(){
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${
-                activeTab === item.id 
-                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600' 
+              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
+                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
                   : 'text-gray-700 hover:bg-gray-100'
-              } ${!sidebarOpen && 'justify-center px-0'}`}
+                } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={22} />
               {sidebarOpen && (
@@ -149,11 +158,10 @@ function Sidebar(){
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${
-                activeTab === item.id 
-                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600' 
+              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
+                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
                   : `${item.color} hover:bg-gray-100`
-              } ${!sidebarOpen && 'justify-center px-0'}`}
+                } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={22} />
               {sidebarOpen && <span className="flex-1 text-left">{item.label}</span>}
@@ -169,11 +177,10 @@ function Sidebar(){
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${
-                activeTab === item.id 
-                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600' 
+              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
+                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
                   : 'text-gray-700 hover:bg-gray-100'
-              } ${!sidebarOpen && 'justify-center px-0'}`}
+                } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={22} />
               {sidebarOpen && <span className="flex-1 text-left">{item.label}</span>}
