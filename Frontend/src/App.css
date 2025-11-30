@@ -12,11 +12,12 @@ body {
 .app-container {
   display: flex;
   height: 100vh;
-  background-color: #1a1a1a;
+  background-color: #000000;
+  color: white;
 }
 
 .main-content {
   flex: 1;
   overflow-y: auto;
-  background-color: #1a1a1a;
+  background-color: #000000;
 }

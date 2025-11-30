@@ -6,8 +6,7 @@ import {
 } from 'lucide-react';
 
 // Desktop Sidebar
-function Sidebar() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+function Sidebar({ sidebarOpen }) {
   const [activeTab, setActiveTab] = useState('home');
   const [showSubscriptions, setShowSubscriptions] = useState(true);
 
@@ -34,13 +33,13 @@ function Sidebar() {
     { id: 'your-videos', icon: PlaySquare, label: 'Your Videos', badge: 5 },
   ];
 
-  const exploreItems = [
-    { id: 'gaming', icon: Gamepad2, label: 'Gaming', color: 'text-purple-500' },
-    { id: 'music', icon: Music, label: 'Music', color: 'text-red-500' },
-    { id: 'news', icon: Newspaper, label: 'News', color: 'text-blue-500' },
-    { id: 'sports', icon: Trophy, label: 'Sports', color: 'text-green-500' },
-    { id: 'education', icon: GraduationCap, label: 'Education', color: 'text-yellow-600' },
-  ];
+  // const exploreItems = [
+  //   { id: 'gaming', icon: Gamepad2, label: 'Gaming', color: 'text-purple-500' },
+  //   { id: 'music', icon: Music, label: 'Music', color: 'text-red-500' },
+  //   { id: 'news', icon: Newspaper, label: 'News', color: 'text-blue-500' },
+  //   { id: 'sports', icon: Trophy, label: 'Sports', color: 'text-green-500' },
+  //   { id: 'education', icon: GraduationCap, label: 'Education', color: 'text-yellow-600' },
+  // ];
 
   const moreItems = [
     { id: 'settings', icon: Settings, label: 'Settings' },
@@ -58,8 +57,8 @@ function Sidebar() {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
-                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
-                  : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
+                : 'text-gray-700 hover:bg-gray-100'
                 } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={24} />
@@ -91,8 +90,8 @@ function Sidebar() {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
-                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
-                  : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
+                : 'text-gray-700 hover:bg-gray-100'
                 } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={22} />
@@ -148,7 +147,7 @@ function Sidebar() {
         {sidebarOpen && <div className="border-t border-gray-200 my-2"></div>}
 
         {/* Explore Section */}
-        <div className="mb-2">
+        {/* <div className="mb-2">
           {sidebarOpen && (
             <h3 className="px-6 py-2 text-sm font-semibold text-gray-600 uppercase tracking-wide">
               Explore
@@ -159,8 +158,8 @@ function Sidebar() {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
-                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
-                  : `${item.color} hover:bg-gray-100`
+                ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
+                : `${item.color} hover:bg-gray-100`
                 } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={22} />
@@ -169,7 +168,7 @@ function Sidebar() {
           ))}
         </div>
 
-        {sidebarOpen && <div className="border-t border-gray-200 my-2"></div>}
+        {sidebarOpen && <div className="border-t border-gray-200 my-2"></div>} */}
 
         {/* More Section */}
         <div className="mb-2">
@@ -178,8 +177,8 @@ function Sidebar() {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
-                  ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
-                  : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
+                : 'text-gray-700 hover:bg-gray-100'
                 } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={22} />
