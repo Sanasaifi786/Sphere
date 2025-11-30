@@ -33,14 +33,6 @@ function Sidebar({ sidebarOpen }) {
     { id: 'your-videos', icon: PlaySquare, label: 'Your Videos', badge: 5 },
   ];
 
-  // const exploreItems = [
-  //   { id: 'gaming', icon: Gamepad2, label: 'Gaming', color: 'text-purple-500' },
-  //   { id: 'music', icon: Music, label: 'Music', color: 'text-red-500' },
-  //   { id: 'news', icon: Newspaper, label: 'News', color: 'text-blue-500' },
-  //   { id: 'sports', icon: Trophy, label: 'Sports', color: 'text-green-500' },
-  //   { id: 'education', icon: GraduationCap, label: 'Education', color: 'text-yellow-600' },
-  // ];
-
   const moreItems = [
     { id: 'settings', icon: Settings, label: 'Settings' },
     { id: 'help', icon: HelpCircle, label: 'Help' },
@@ -48,7 +40,7 @@ function Sidebar({ sidebarOpen }) {
   ];
 
   return (
-    <div className={`fixed left-0 top-16 bottom-0 bg-white border-r border-gray-200 transition-all duration-300 overflow-y-auto z-40 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
+    <div className={`fixed left-0 top-16 bottom-0 bg-black border-r border-gray-800 transition-all duration-300 overflow-y-auto z-30 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
       <nav className="py-2">
         {/* Main Navigation */}
         <div className="mb-2">
@@ -57,8 +49,8 @@ function Sidebar({ sidebarOpen }) {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
-                ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-zinc-900 text-white border-r-4 border-white'
+                : 'text-white hover:bg-zinc-900'
                 } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={24} />
@@ -66,7 +58,7 @@ function Sidebar({ sidebarOpen }) {
                 <>
                   <span className="flex-1 text-left font-medium">{item.label}</span>
                   {item.badge && (
-                    <span className="bg-red-600 text-white text-xs px-2 py-1 rounded-full">
+                    <span className="bg-white text-black text-xs px-2 py-1 rounded-full">
                       {item.badge}
                     </span>
                   )}
@@ -76,12 +68,12 @@ function Sidebar({ sidebarOpen }) {
           ))}
         </div>
 
-        {sidebarOpen && <div className="border-t border-gray-200 my-2"></div>}
+        {sidebarOpen && <div className="border-t border-gray-800 my-2"></div>}
 
         {/* Library Section */}
         <div className="mb-2">
           {sidebarOpen && (
-            <h3 className="px-6 py-2 text-sm font-semibold text-gray-600 uppercase tracking-wide">
+            <h3 className="px-6 py-2 text-sm font-semibold text-gray-400 uppercase tracking-wide">
               Library
             </h3>
           )}
@@ -90,8 +82,8 @@ function Sidebar({ sidebarOpen }) {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
-                ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-zinc-900 text-white border-r-4 border-white'
+                : 'text-white hover:bg-zinc-900'
                 } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={22} />
@@ -99,7 +91,7 @@ function Sidebar({ sidebarOpen }) {
                 <>
                   <span className="flex-1 text-left">{item.label}</span>
                   {item.badge && (
-                    <span className="text-xs text-gray-500">{item.badge}</span>
+                    <span className="text-xs text-gray-400">{item.badge}</span>
                   )}
                 </>
               )}
@@ -107,14 +99,14 @@ function Sidebar({ sidebarOpen }) {
           ))}
         </div>
 
-        {sidebarOpen && <div className="border-t border-gray-200 my-2"></div>}
+        {sidebarOpen && <div className="border-t border-gray-800 my-2"></div>}
 
         {/* Subscriptions */}
         {sidebarOpen && (
           <div className="mb-2">
             <button
               onClick={() => setShowSubscriptions(!showSubscriptions)}
-              className="w-full flex items-center justify-between px-6 py-2 text-sm font-semibold text-gray-600 uppercase tracking-wide hover:bg-gray-50"
+              className="w-full flex items-center justify-between px-6 py-2 text-sm font-semibold text-gray-400 uppercase tracking-wide hover:bg-zinc-900"
             >
               <span>Subscriptions</span>
               {showSubscriptions ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
@@ -125,7 +117,7 @@ function Sidebar({ sidebarOpen }) {
                   <button
                     key={channel.id}
                     onClick={() => setActiveTab(`channel-${channel.id}`)}
-                    className="w-full flex items-center gap-3 px-6 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                    className="w-full flex items-center gap-3 px-6 py-2 text-white hover:bg-zinc-900 transition-colors"
                   >
                     <div className="relative">
                       <span className="text-2xl">{channel.avatar}</span>
@@ -136,7 +128,7 @@ function Sidebar({ sidebarOpen }) {
                     <span className="text-sm truncate flex-1 text-left">{channel.name}</span>
                   </button>
                 ))}
-                <button className="w-full px-6 py-2 text-sm text-red-600 hover:bg-gray-100 text-left">
+                <button className="w-full px-6 py-2 text-sm text-gray-400 hover:bg-zinc-900 text-left">
                   Show 15 more
                 </button>
               </div>
@@ -144,31 +136,7 @@ function Sidebar({ sidebarOpen }) {
           </div>
         )}
 
-        {sidebarOpen && <div className="border-t border-gray-200 my-2"></div>}
-
-        {/* Explore Section */}
-        {/* <div className="mb-2">
-          {sidebarOpen && (
-            <h3 className="px-6 py-2 text-sm font-semibold text-gray-600 uppercase tracking-wide">
-              Explore
-            </h3>
-          )}
-          {exploreItems.map(item => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
-                ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
-                : `${item.color} hover:bg-gray-100`
-                } ${!sidebarOpen && 'justify-center px-0'}`}
-            >
-              <item.icon size={22} />
-              {sidebarOpen && <span className="flex-1 text-left">{item.label}</span>}
-            </button>
-          ))}
-        </div>
-
-        {sidebarOpen && <div className="border-t border-gray-200 my-2"></div>} */}
+        {sidebarOpen && <div className="border-t border-gray-800 my-2"></div>}
 
         {/* More Section */}
         <div className="mb-2">
@@ -177,35 +145,42 @@ function Sidebar({ sidebarOpen }) {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
-                ? 'bg-red-50 text-red-600 border-r-4 border-red-600'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-zinc-900 text-white border-r-4 border-white'
+                : 'text-white hover:bg-zinc-900'
                 } ${!sidebarOpen && 'justify-center px-0'}`}
             >
               <item.icon size={22} />
-              {sidebarOpen && <span className="flex-1 text-left">{item.label}</span>}
+              {sidebarOpen && (
+                <>
+                  <span className="flex-1 text-left">{item.label}</span>
+                  {item.badge && (
+                    <span className="text-xs text-gray-400">{item.badge}</span>
+                  )}
+                </>
+              )}
             </button>
           ))}
         </div>
 
         {sidebarOpen && (
-          <div className="px-6 py-4 text-xs text-gray-500 space-y-2">
+          <div className="px-6 py-4 text-xs text-gray-400 space-y-2">
             <div className="flex flex-wrap gap-2">
-              <a href="#" className="hover:text-gray-700">About</a>
-              <a href="#" className="hover:text-gray-700">Press</a>
-              <a href="#" className="hover:text-gray-700">Copyright</a>
-              <a href="#" className="hover:text-gray-700">Contact</a>
+              <a href="#" className="hover:text-white">About</a>
+              <a href="#" className="hover:text-white">Press</a>
+              <a href="#" className="hover:text-white">Copyright</a>
+              <a href="#" className="hover:text-white">Contact</a>
             </div>
             <div className="flex flex-wrap gap-2">
-              <a href="#" className="hover:text-gray-700">Creators</a>
-              <a href="#" className="hover:text-gray-700">Advertise</a>
-              <a href="#" className="hover:text-gray-700">Developers</a>
+              <a href="#" className="hover:text-white">Creators</a>
+              <a href="#" className="hover:text-white">Advertise</a>
+              <a href="#" className="hover:text-white">Developers</a>
             </div>
             <div className="flex flex-wrap gap-2">
-              <a href="#" className="hover:text-gray-700">Terms</a>
-              <a href="#" className="hover:text-gray-700">Privacy</a>
-              <a href="#" className="hover:text-gray-700">Policy</a>
+              <a href="#" className="hover:text-white">Terms</a>
+              <a href="#" className="hover:text-white">Privacy</a>
+              <a href="#" className="hover:text-white">Policy</a>
             </div>
-            <p className="pt-2">© 2024 VidHub</p>
+            <p className="pt-2">© 2024 Sphere</p>
           </div>
         )}
       </nav>
