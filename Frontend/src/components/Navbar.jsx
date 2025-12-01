@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Search, Mic, Menu, User } from 'lucide-react';
+import logo from '../assets/logo.png';
 
 const Navbar = ({ toggleSidebar }) => {
     return (
@@ -11,11 +13,10 @@ const Navbar = ({ toggleSidebar }) => {
                 </button>
                 <div className="flex items-center gap-1 cursor-pointer">
                     <img
-                        src="https://e7.pngegg.com/pngimages/271/306/png-clipart-video-editing-software-film-editing-computer-icons-video-quality-angle-video-editing.png"
+                        src={logo}
                         alt="Sphere Logo"
-                        className="w-8 h-8 object-contain"
+                        className="h-14 object-contain"
                     />
-                    <span className="text-xl font-bold tracking-tight">Sphere</span>
                 </div>
             </div>
 
@@ -38,10 +39,12 @@ const Navbar = ({ toggleSidebar }) => {
 
             {/* Right Section: Login */}
             <div className="flex items-center gap-4">
-                <button className="flex items-center gap-2 border border-gray-700 rounded-full px-4 py-1.5 hover:bg-[#263850] hover:border-blue-700 text-white-400 font-medium text-sm">
-                    <User size={20} />
-                    <span>Sign in</span>
-                </button>
+                <Link to="/login">
+                    <button className="flex items-center gap-2 border border-gray-700 rounded-full px-4 py-1.5 hover:bg-[#263850] hover:border-blue-700 text-white-400 font-medium text-sm">
+                        <User size={20} />
+                        <span>Sign in</span>
+                    </button>
+                </Link>
             </div>
         </nav>
     );

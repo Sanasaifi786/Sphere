@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-function SignIn(){
+function SignIn() {
     const [data, setData] = useState({
         fullName: '',
         username: '',
@@ -8,7 +9,7 @@ function SignIn(){
         password: '',
         confirmPassword: ''
     });
-    const [files,setFiles] = useState({
+    const [files, setFiles] = useState({
         avatar: null,
         coverImage: null
     });
@@ -22,7 +23,7 @@ function SignIn(){
 
     const handleFileChange = (e) => {
         const { name, files: selectedFiles } = e.target;
-        setFiles(prevFiles =>({
+        setFiles(prevFiles => ({
             ...prevFiles,
             [name]: selectedFiles[0]
         }));
@@ -88,7 +89,7 @@ function SignIn(){
         }
     };
 
-    return(
+    return (
         <div className="container mx-auto px-4 py-6 ">
             <div className="flex items-center justify-center px-4 py-8 ">
                 <div className="rounded-xl border bg-card text-card-foreground shadow w-full max-w-md ">
@@ -164,7 +165,7 @@ function SignIn(){
                             </svg>Continue with Google</button>
                     </div>
                     <div className="items-center p-6 pt-0 flex flex-col space-y-4">
-                        <div className="text-sm text-muted-foreground text-center">Don't have an account? <a className="text-primary hover:underline" href="/login">Login</a>
+                        <div className="text-sm text-muted-foreground text-center">Don't have an account? <Link className="text-primary hover:underline" to="/login">Login</Link>
                         </div>
                     </div>
                 </div>

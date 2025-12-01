@@ -4,6 +4,8 @@ import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
 import CategoryPills from './components/CategoryPills'
 import Home from './pages/Home'
+import Login from './pages/Login'
+import SignIn from './pages/SignIn'
 import './App.css'
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
           <div className="p-4">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignIn />} />
             </Routes>
           </div>
         </div>

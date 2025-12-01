@@ -80,6 +80,126 @@ const videos = [
         time: "2 years ago",
         duration: "18:30",
         avatar: "https://randomuser.me/api/portraits/men/8.jpg"
+    },
+    {
+        id: 9,
+        title: "Mastering Docker & Kubernetes",
+        thumbnail: "https://i.ytimg.com/vi/dhtP9tQx1Yc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "DevOps World",
+        views: "85K views",
+        time: "3 days ago",
+        duration: "45:20",
+        avatar: "https://randomuser.me/api/portraits/men/9.jpg"
+    },
+    {
+        id: 10,
+        title: "Rust Programming for Beginners",
+        thumbnail: "https://i.ytimg.com/vi/MsocPEZ8p84/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Rustacean Station",
+        views: "210K views",
+        time: "1 month ago",
+        duration: "1:15:00",
+        avatar: "https://randomuser.me/api/portraits/women/10.jpg"
+    },
+    {
+        id: 11,
+        title: "UI/UX Design Trends 2025",
+        thumbnail: "https://i.ytimg.com/vi/c9Wg6Cb_YlU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Design Hub",
+        views: "340K views",
+        time: "2 weeks ago",
+        duration: "14:45",
+        avatar: "https://randomuser.me/api/portraits/men/11.jpg"
+    },
+    {
+        id: 12,
+        title: "Machine Learning with Python",
+        thumbnail: "https://i.ytimg.com/vi/i_LwzRVP7bg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "AI Academy",
+        views: "1.5M views",
+        time: "6 months ago",
+        duration: "2:30:15",
+        avatar: "https://randomuser.me/api/portraits/women/12.jpg"
+    },
+    {
+        id: 13,
+        title: "Web3 & Blockchain Explained",
+        thumbnail: "https://i.ytimg.com/vi/YIVAluSL9SU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Crypto Insight",
+        views: "95K views",
+        time: "5 days ago",
+        duration: "20:10",
+        avatar: "https://randomuser.me/api/portraits/men/13.jpg"
+    },
+    {
+        id: 14,
+        title: "Advanced React Patterns",
+        thumbnail: "https://i.ytimg.com/vi/8u1o-OmOeGQ/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "React Pro",
+        views: "67K views",
+        time: "2 days ago",
+        duration: "35:50",
+        avatar: "https://randomuser.me/api/portraits/women/14.jpg"
+    },
+    {
+        id: 15,
+        title: "Cybersecurity Basics",
+        thumbnail: "https://i.ytimg.com/vi/inWWhr5tnEA/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Secure Net",
+        views: "420K views",
+        time: "3 months ago",
+        duration: "55:25",
+        avatar: "https://randomuser.me/api/portraits/men/15.jpg"
+    },
+    {
+        id: 16,
+        title: "Mobile App Development with Flutter",
+        thumbnail: "https://i.ytimg.com/vi/VPvVD8t02U8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Flutter Dev",
+        views: "180K views",
+        time: "1 week ago",
+        duration: "1:10:40",
+        avatar: "https://randomuser.me/api/portraits/women/16.jpg"
+    },
+    {
+        id: 17,
+        title: "Game Development with Unity",
+        thumbnail: "https://i.ytimg.com/vi/j48LtUkZRjU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Game Dev HQ",
+        views: "560K views",
+        time: "4 months ago",
+        duration: "2:45:00",
+        avatar: "https://randomuser.me/api/portraits/men/17.jpg"
+    },
+    {
+        id: 18,
+        title: "Data Science Roadmap 2024",
+        thumbnail: "https://i.ytimg.com/vi/ua-CiDNNj30/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Data Wizard",
+        views: "290K views",
+        time: "2 weeks ago",
+        duration: "16:30",
+        avatar: "https://randomuser.me/api/portraits/women/18.jpg"
+    },
+    {
+        id: 19,
+        title: "Cloud Computing Fundamentals",
+        thumbnail: "https://i.ytimg.com/vi/M988_fsOSWo/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Cloud Guru",
+        views: "110K views",
+        time: "1 month ago",
+        duration: "40:15",
+        avatar: "https://randomuser.me/api/portraits/men/19.jpg"
+    },
+    {
+        id: 20,
+        title: "Photography Masterclass",
+        thumbnail: "https://i.ytimg.com/vi/V7z7BAZdt2M/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_5Zce8y3_tX-q_8sQ4gqgF9q_qg",
+        channel: "Photo Pro",
+        views: "75K views",
+        time: "5 days ago",
+        duration: "25:50",
+        avatar: "https://randomuser.me/api/portraits/women/20.jpg"
     }
 ];
 

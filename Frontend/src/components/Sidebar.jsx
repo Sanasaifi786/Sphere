@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Home, TrendingUp, Film, Library, Clock, ThumbsUp, ListVideo, History, PlaySquare,
   Gamepad2, Music, Newspaper, Trophy, GraduationCap, Settings, HelpCircle, MessageSquare,
@@ -7,6 +8,7 @@ import {
 
 // Desktop Sidebar
 function Sidebar({ sidebarOpen }) {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('home');
   const [showSubscriptions, setShowSubscriptions] = useState(true);
 
@@ -44,10 +46,20 @@ function Sidebar({ sidebarOpen }) {
       <nav className="py-2">
         {/* Main Navigation */}
         <div className="mb-2">
+          {sidebarOpen && (
+            <h3 className="px-6 py-2 text-sm font-semibold text-gray-400 uppercase tracking-wide">
+              Home
+            </h3>
+          )}
           {mainNavItems.map(item => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => {
+                setActiveTab(item.id);
+                if (item.id === 'home') {
+                  navigate('/');
+                }
+              }}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
                 ? 'bg-zinc-900 text-white border-r-4 border-white'
                 : 'text-white hover:bg-zinc-900'
