@@ -18,7 +18,7 @@ function App() {
       <Navbar toggleSidebar={toggleSidebar} />
       <div className="app-container pt-16">
         <Sidebar sidebarOpen={sidebarOpen} />
-        <div className={`main-content relative transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
+        <div className={`main-content relative transition-all duration-300 w-full`}>
           <CategoryPills />
           <div className="p-4">
             <Routes>

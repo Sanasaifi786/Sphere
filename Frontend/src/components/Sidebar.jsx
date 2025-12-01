@@ -21,16 +21,16 @@ function Sidebar({ sidebarOpen }) {
   const mainNavItems = [
     { id: 'home', icon: Home, label: 'Home', badge: null },
     { id: 'trending', icon: TrendingUp, label: 'Trending', badge: null },
-    { id: 'subscriptions', icon: Film, label: 'Subscriptions', badge: 12 },
+    { id: 'subscriptions', icon: Film, label: 'Subscriptions', badge: null },
   ];
 
   const libraryItems = [
     { id: 'library', icon: Library, label: 'Library', badge: null },
-    { id: 'watch-later', icon: Clock, label: 'Watch Later', badge: 23 },
+    { id: 'watch-later', icon: Clock, label: 'Watch Later', badge: null },
     { id: 'liked', icon: ThumbsUp, label: 'Liked Videos', badge: null },
-    { id: 'playlists', icon: ListVideo, label: 'Playlists', badge: 8 },
+    { id: 'playlists', icon: ListVideo, label: 'Playlists', badge: null },
     { id: 'history', icon: History, label: 'Watch History', badge: null },
-    { id: 'your-videos', icon: PlaySquare, label: 'Your Videos', badge: 5 },
+    { id: 'your-videos', icon: PlaySquare, label: 'Your Videos', badge: null },
   ];
 
   const moreItems = [
@@ -40,7 +40,7 @@ function Sidebar({ sidebarOpen }) {
   ];
 
   return (
-    <div className={`fixed left-0 top-16 bottom-0 bg-black border-r border-gray-800 transition-all duration-300 overflow-y-auto z-30 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
+    <div className={`h-full bg-black border-r border-gray-800 transition-all duration-300 overflow-y-auto z-30 shrink-0 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
       <nav className="py-2">
         {/* Main Navigation */}
         <div className="mb-2">
@@ -180,7 +180,7 @@ function Sidebar({ sidebarOpen }) {
               <a href="#" className="hover:text-white">Privacy</a>
               <a href="#" className="hover:text-white">Policy</a>
             </div>
-            <p className="pt-2">© 2024 Sphere</p>
+            <p className="pt-2">© 2025 Sphere</p>
           </div>
         )}
       </nav>
