@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const videos = [
     {
@@ -204,6 +204,23 @@ const videos = [
 ];
 
 const Home = () => {
+
+    // const [videoshel, setVideoshel] = useState([]);
+    
+    // useEffect(() => {
+    //     const fetchVideos = async () => {
+    //         try {
+    //             const response = await fetch('http://localhost:8000/api/v1/videos');
+    //             const data = await response.json();
+    //             setVideoshel(data);
+    //         } catch (error) {
+    //             console.error('Error fetching videos:', error);
+    //         }
+    //     };
+    //     fetchVideos();
+    // }, []);
+    // console.log(videoshel.data.docs[1]);
+    
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {videos.map((video) => (
