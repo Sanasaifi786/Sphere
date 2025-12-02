@@ -1,40 +1,33 @@
-import { useAuth } from "../context/AuthContext";
+import api from './axios.js';
 
-const BASE_URL = 'http://localhost:8000/api/v1/likes';
-
-const getAuthHeaders = () => {
-    const token = localStorage.getItem('accessToken');
-    return token ? { 'Authorization': `Bearer ${token}` } : {};
-};
+const BASE_URL = '/likes';
 
 export const toggleVideoLike = async (videoId) => {
     try {
-        const response = await fetch(`${BASE_URL}/toggle/v/${videoId}`, {
-            method: 'POST',
-            headers: {
-                ...getAuthHeaders(),
-                'Content-Type': 'application/json'
-            }
-        });
-        return await response.json();
+        const response = await api.post(`${BASE_URL}/toggle/v/${videoId}`);
+        return response.data;
     } catch (error) {
         console.error("Error toggling like:", error);
-        throw error;
+        throw error.response?.data || error.message;
+    }
+};
+
+export const toggleVideoDislike = async (videoId) => {
+    try {
+        const response = await api.post(`${BASE_URL}/toggle/v/${videoId}/dislike`);
+        return response.data;
+    } catch (error) {
+        console.error("Error toggling dislike:", error);
+        throw error.response?.data || error.message;
     }
 };
 
 export const getLikedVideos = async () => {
     try {
-        const response = await fetch(`${BASE_URL}/videos`, {
-            method: 'GET',
-            headers: {
-                ...getAuthHeaders(),
-                'Content-Type': 'application/json'
-            }
-        });
-        return await response.json();
+        const response = await api.get(`${BASE_URL}/videos`);
+        return response.data;
     } catch (error) {
         console.error("Error fetching liked videos:", error);
-        throw error;
+        throw error.response?.data || error.message;
     }
 };

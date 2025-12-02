@@ -85,20 +85,6 @@ const getAllVideos = asyncHandler(async (req, res) => {
     pipeline.push({
         $addFields: {
             likesCount: { $size: "$likes" },
-            isLiked: {
-                $cond: {
-                    if: { $in: [req.user?._id, "$likes.likedBy"] },
-                    then: true,
-                    else: false
-                }
-            }
-        }
-    });
-
-    // Remove likes array to keep response clean
-    pipeline.push({
-        $project: {
-            likes: 0
         }
     });
 
@@ -184,17 +170,11 @@ const getVideoById = asyncHandler(async (req, res) => {
             }
         },
         {
-            $addFields: {
-                likesCount: {
-                    $size: "$likes"
-                },
-                isLiked: {
-                    $cond: {
-                        if: { $in: [req.user?._id, "$likes.likedBy"] },
-                        then: true,
-                        else: false
-                    }
-                }
+            $lookup: {
+                from: "dislikes",
+                localField: "_id",
+                foreignField: "video",
+                as: "dislikes"
             }
         },
         {
@@ -206,6 +186,7 @@ const getVideoById = asyncHandler(async (req, res) => {
                 pipeline: [
                     {
                         $project: {
+                            _id: 1,
                             username: 1,
                             fullName: 1,
                             avatar: 1,
@@ -219,12 +200,53 @@ const getVideoById = asyncHandler(async (req, res) => {
             $addFields: {
                 owner: {
                     $first: "$owner"
+                },
+                likesCount: {
+                    $size: "$likes"
+                },
+                isLiked: {
+                    $cond: {
+                        if: { $in: [req.user?._id, "$likes.likedBy"] },
+                        then: true,
+                        else: false
+                    }
+                },
+                isDisliked: {
+                    $cond: {
+                        if: { $in: [req.user?._id, "$dislikes.dislikedBy"] },
+                        then: true,
+                        else: false
+                    }
+                }
+            }
+        },
+        {
+            $lookup: {
+                from: "subscriptions",
+                localField: "owner._id",
+                foreignField: "channel",
+                as: "subscribers"
+            }
+        },
+        {
+            $addFields: {
+                "owner.subscribersCount": {
+                    $size: "$subscribers"
+                },
+                "owner.isSubscribed": {
+                    $cond: {
+                        if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+                        then: true,
+                        else: false
+                    }
                 }
             }
         },
         {
             $project: {
-                likes: 0
+                likes: 0,
+                dislikes: 0,
+                subscribers: 0
             }
         }
     ]);

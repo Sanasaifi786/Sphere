@@ -85,7 +85,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   // request body se data 
-
   const { username, email, password } = req.body;
   console.log(email);
 
@@ -122,7 +121,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true
+    secure: process.env.NODE_ENV === "production"
   }
 
   return res
@@ -157,7 +156,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true
+    secure: process.env.NODE_ENV === "production"
   }
 
   return res.status(200)
@@ -173,13 +172,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   if (!incomingRefreshToken) {
     throw new ApiError(401, "Unauthorised Request");
   }
-  console.log(incomingRefreshToken);
 
   try {
     const decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET)
 
     const user = await User.findById(decodedToken?._id)
-    console.log("user finded" + user)
 
     if (!user) {
       throw new ApiError(401, "Invalid Refresh Token");
@@ -191,20 +188,20 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const options = {
       httpOnly: true,
-      secure: true
+      secure: process.env.NODE_ENV === "production"
     }
 
-    const { accessToken, newrefreshToken } = await generateAccesAndRefreshTokens(user._id)
+    const { accessToken, refreshToken: newRefreshToken } = await generateAccesAndRefreshTokens(user._id)
 
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", newrefreshToken, options)
+      .cookie("refreshToken", newRefreshToken, options)
       .json(
         new ApiResponse(
           200,
           {
-            accessToken, refreshToken: newrefreshToken
+            accessToken, refreshToken: newRefreshToken
           },
           "Acces Token Refreshed Succesfully"
         )
@@ -372,6 +369,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
     },
     {
       $project: {
+        _id: 1,
         fullName: 1,
         username: 1,
         subscriberCount: 1,

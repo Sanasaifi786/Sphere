@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getVideoById, getAllVideos } from '../api/video.api';
-import { toggleVideoLike } from '../api/like.api';
+import { toggleVideoLike, toggleVideoDislike } from '../api/like.api';
+import { toggleSubscription } from '../api/subscription.api';
 import { ThumbsUp, ThumbsDown, Share2, MoreHorizontal, Bell } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -13,7 +14,10 @@ const VideoPlayer = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isLiked, setIsLiked] = useState(false);
+    const [isDisliked, setIsDisliked] = useState(false);
     const [likesCount, setLikesCount] = useState(0);
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [subscribersCount, setSubscribersCount] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,7 +29,10 @@ const VideoPlayer = () => {
                 ]);
                 setVideo(videoResponse.data);
                 setIsLiked(videoResponse.data.isLiked);
+                setIsDisliked(videoResponse.data.isDisliked);
                 setLikesCount(videoResponse.data.likesCount);
+                setIsSubscribed(videoResponse.data.owner.isSubscribed);
+                setSubscribersCount(videoResponse.data.owner.subscribersCount);
 
                 // Filter out current video from recommendations
                 const allVideos = recommendationsResponse.data.docs;
@@ -52,9 +59,47 @@ const VideoPlayer = () => {
             if (response.success) {
                 setIsLiked(!isLiked);
                 setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
+                if (isDisliked) setIsDisliked(false);
             }
         } catch (error) {
             console.error("Error liking video:", error);
+        }
+    };
+
+    const handleDislike = async () => {
+        if (!user) {
+            alert("Please login to dislike videos");
+            return;
+        }
+        try {
+            const response = await toggleVideoDislike(videoId);
+            if (response.success) {
+                setIsDisliked(!isDisliked);
+                if (isLiked) {
+                    setIsLiked(false);
+                    setLikesCount(prev => prev - 1);
+                }
+            }
+        } catch (error) {
+            console.error("Error disliking video:", error);
+        }
+    };
+
+    const handleSubscribe = async () => {
+        if (!user) {
+            alert("Please login to subscribe");
+            return;
+        }
+        try {
+            const response = await toggleSubscription(video.owner._id);
+            if (response.success) {
+                const isSubscribed = response.data.subscribed;
+                setIsSubscribed(isSubscribed);
+                setSubscribersCount(prev => isSubscribed ? prev + 1 : prev - 1);
+            }
+        } catch (error) {
+            console.error("Error toggling subscription:", error);
+            alert("Error subscribing: " + (error.message || "Unknown error"));
         }
     };
 
@@ -99,9 +144,9 @@ const VideoPlayer = () => {
                     </div>
 
                     {/* Video Title */}
-                    <h1 className="text-xl md:text-2xl font-bold text-white mt-4 line-clamp-2">
+                    <h5 className="text-xl md:text-2xl font-bold text-white mt-4 line-clamp-2">
                         {video.title}
-                    </h1>
+                    </h5>
 
                     {/* Channel Info & Actions Bar */}
                     <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 gap-4">
@@ -119,11 +164,14 @@ const VideoPlayer = () => {
                                     {video.owner?.username || "Unknown User"}
                                 </Link>
                                 <span className="text-xs text-gray-400">
-                                    {video.owner?.subscribersCount || 0} subscribers
+                                    {subscribersCount} subscribers
                                 </span>
                             </div>
-                            <button className="bg-white text-black px-4 py-2 rounded-full font-semibold text-sm hover:bg-gray-200 transition-colors ml-2">
-                                Subscribe
+                            <button
+                                onClick={handleSubscribe}
+                                className={`px-4 py-2 rounded-full font-semibold text-sm transition-colors ml-2 ${isSubscribed ? 'bg-gray-200 text-black' : 'bg-white text-black hover:bg-gray-200'}`}
+                            >
+                                {isSubscribed ? 'Subscribed' : 'Subscribe'}
                             </button>
                         </div>
 
@@ -137,8 +185,11 @@ const VideoPlayer = () => {
                                     <ThumbsUp size={20} className={isLiked ? 'fill-current' : ''} />
                                     <span>{likesCount}</span>
                                 </button>
-                                <button className="px-4 py-2 hover:bg-[#3f3f3f] transition-colors text-white">
-                                    <ThumbsDown size={20} />
+                                <button
+                                    onClick={handleDislike}
+                                    className={`px-4 py-2 hover:bg-[#3f3f3f] transition-colors ${isDisliked ? 'text-blue-500' : 'text-white'}`}
+                                >
+                                    <ThumbsDown size={20} className={isDisliked ? 'fill-current' : ''} />
                                 </button>
                             </div>
 
@@ -195,9 +246,9 @@ const VideoPlayer = () => {
                                 </span>
                             </div>
                             <div className="flex flex-col flex-1 min-w-0">
-                                <h4 className="text-white font-semibold text-sm line-clamp-2 leading-tight mb-1" title={recVideo.title}>
+                                <p className="text-white font-semibold text-sm line-clamp-2 leading-tight mb-1" title={recVideo.title}>
                                     {recVideo.title}
-                                </h4>
+                                </p>
                                 <p className="text-gray-400 text-xs hover:text-white transition-colors">
                                     {recVideo.ownerDetails?.username || "Unknown Channel"}
                                 </p>

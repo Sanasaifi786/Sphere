@@ -1,5 +1,6 @@
 import mongoose, { isValidObjectId } from "mongoose"
 import { Like } from "../models/like.model.js"
+import { Dislike } from "../models/dislike.model.js"
 import ApiError from "../utils/ApiError.js"
 import ApiResponse from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
@@ -23,6 +24,12 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
             .json(new ApiResponse(200, { liked: false }, "unliked successfully"))
     }
 
+    // Check if disliked and remove it
+    await Dislike.findOneAndDelete({
+        video: videoId,
+        dislikedBy: req.user?._id
+    })
+
     await Like.create({
         video: videoId,
         likedBy: req.user?._id
@@ -31,6 +38,40 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     return res
         .status(200)
         .json(new ApiResponse(200, { liked: true }, "liked successfully"))
+})
+
+const toggleVideoDislike = asyncHandler(async (req, res) => {
+    const { videoId } = req.params
+    if (!isValidObjectId(videoId)) {
+        throw new ApiError(400, "Invalid video id")
+    }
+
+    const dislikedVideo = await Dislike.findOne({
+        video: videoId,
+        dislikedBy: req.user?._id
+    })
+
+    if (dislikedVideo) {
+        await Dislike.findByIdAndDelete(dislikedVideo?._id)
+        return res
+            .status(200)
+            .json(new ApiResponse(200, { disliked: false }, "undisliked successfully"))
+    }
+
+    // Check if liked and remove it
+    await Like.findOneAndDelete({
+        video: videoId,
+        likedBy: req.user?._id
+    })
+
+    await Dislike.create({
+        video: videoId,
+        dislikedBy: req.user?._id
+    })
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, { disliked: true }, "disliked successfully"))
 })
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
@@ -164,5 +205,6 @@ export {
     toggleCommentLike,
     toggleTweetLike,
     toggleVideoLike,
+    toggleVideoDislike,
     getLikedVideos
 }

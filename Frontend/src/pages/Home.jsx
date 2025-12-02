@@ -81,9 +81,9 @@ const Home = () => {
                             className="w-9 h-9 rounded-full object-cover"
                         />
                         <div className="flex flex-col flex-1">
-                            <h3 className="text-white font-semibold text-sm leading-tight line-clamp-2" title={video.title}>
+                            <p className="text-white font-semibold text-sm leading-tight line-clamp-2" title={video.title}>
                                 {video.title}
-                            </h3>
+                            </p>
                             <p className="text-gray-400 text-xs mt-1 hover:text-white">
                                 {video.ownerDetails?.username || "Unknown User"}
                             </p>

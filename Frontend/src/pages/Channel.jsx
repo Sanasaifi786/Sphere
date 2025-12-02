@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toggleSubscription } from '../api/subscription.api';
+import api from '../api/axios';
+import { useAuth } from '../context/AuthContext';
 
 function Channel() {
     const { username } = useParams();
@@ -7,18 +10,13 @@ function Channel() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const { user } = useAuth();
+
     useEffect(() => {
         const fetchChannel = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/v1/users/c/${username}`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // Assuming token is stored
-                    }
-                });
-                const result = await response.json();
-                if (!response.ok) {
-                    throw new Error(result.message || 'Failed to fetch channel');
-                }
+                const response = await api.get(`/users/c/${username}`);
+                const result = response.data;
                 setChannel(result.data);
             } catch (err) {
                 setError(err.message);
@@ -31,6 +29,26 @@ function Channel() {
             fetchChannel();
         }
     }, [username]);
+
+    const handleSubscribe = async () => {
+        if (!user) {
+            alert("Please login to subscribe");
+            return;
+        }
+        try {
+            const response = await toggleSubscription(channel._id);
+            if (response.success) {
+                setChannel((prev) => ({
+                    ...prev,
+                    isSubscribed: response.data.subscribed,
+                    subscriberCount: response.data.subscribed ? prev.subscriberCount + 1 : prev.subscriberCount - 1
+                }));
+            }
+        } catch (error) {
+            console.error("Error toggling subscription:", error);
+            alert("Error subscribing: " + (error.message || "Unknown error"));
+        }
+    };
 
     if (loading) return <div className="text-white text-center mt-10">Loading...</div>;
     if (error) return <div className="text-red-500 text-center mt-10">Error: {error}</div>;
@@ -72,7 +90,10 @@ function Channel() {
                     </div>
                 </div>
 
-                <button className="bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-gray-200">
+                <button
+                    onClick={handleSubscribe}
+                    className={`px-4 py-2 rounded-full font-medium ${channel.isSubscribed ? 'bg-gray-200 text-black' : 'bg-white text-black hover:bg-gray-200'}`}
+                >
                     {channel.isSubscribed ? 'Subscribed' : 'Subscribe'}
                 </button>
             </div>

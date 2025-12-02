@@ -36,4 +36,7 @@ app.use("/api/v1/playlists", playlistRouter)
 app.use("/api/v1/likes", likeRouter)
 app.use("/api/v1/comments", commentRouter)
 
+import { errorHandler } from "./middlewares/error.middleware.js";
+app.use(errorHandler)
+
 export default app;

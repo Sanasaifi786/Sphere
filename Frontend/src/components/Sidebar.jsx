@@ -1,24 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Home, TrendingUp, Film, Library, Clock, ThumbsUp, ListVideo, History, PlaySquare,
-  Gamepad2, Music, Newspaper, Trophy, GraduationCap, Settings, HelpCircle, MessageSquare,
-  ChevronDown, ChevronRight
+  Settings, HelpCircle, MessageSquare, ChevronDown, ChevronRight
 } from 'lucide-react';
+import { getSubscribedChannels } from '../api/subscription.api';
+import { useAuth } from '../context/AuthContext';
 
 // Desktop Sidebar
 function Sidebar({ sidebarOpen }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('home');
   const [showSubscriptions, setShowSubscriptions] = useState(true);
+  const [subscribedChannels, setSubscribedChannels] = useState([]);
 
-  const subscribedChannels = [
-    { id: 1, name: 'Tech Channel', avatar: '💻', online: true },
-    { id: 2, name: 'Gaming Pro', avatar: '🎮', online: false },
-    { id: 3, name: 'Music World', avatar: '🎵', online: true },
-    { id: 4, name: 'Cooking Master', avatar: '👨‍🍳', online: false },
-    { id: 5, name: 'Travel Vlog', avatar: '✈️', online: true },
-  ];
+  useEffect(() => {
+    const fetchSubscribedChannels = async () => {
+      if (user?._id) {
+        try {
+          const response = await getSubscribedChannels(user._id);
+          if (response.success) {
+            setSubscribedChannels(response.data);
+          }
+        } catch (error) {
+          console.error("Error fetching subscribed channels:", error);
+        }
+      } else {
+        setSubscribedChannels([]);
+      }
+    };
+
+    fetchSubscribedChannels();
+  }, [user]);
 
   const mainNavItems = [
     { id: 'home', icon: Home, label: 'Home', badge: null },
@@ -121,7 +135,7 @@ function Sidebar({ sidebarOpen }) {
         {sidebarOpen && <div className="border-t border-gray-800 my-2"></div>}
 
         {/* Subscriptions */}
-        {sidebarOpen && (
+        {sidebarOpen && user && (
           <div className="mb-2">
             <button
               onClick={() => setShowSubscriptions(!showSubscriptions)}
@@ -132,24 +146,35 @@ function Sidebar({ sidebarOpen }) {
             </button>
             {showSubscriptions && (
               <div>
-                {subscribedChannels.map(channel => (
+                {subscribedChannels.map(sub => (
                   <button
-                    key={channel.id}
-                    onClick={() => setActiveTab(`channel-${channel.id}`)}
+                    key={sub.subscribedChannel._id}
+                    onClick={() => {
+                      setActiveTab(`channel-${sub.subscribedChannel._id}`);
+                      navigate(`/c/${sub.subscribedChannel.username}`);
+                    }}
                     className="w-full flex items-center gap-3 px-6 py-2 text-white hover:bg-zinc-900 transition-colors"
                   >
                     <div className="relative">
-                      <span className="text-2xl">{channel.avatar}</span>
-                      {channel.online && (
-                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                      {sub.subscribedChannel.avatar ? (
+                        <img src={sub.subscribedChannel.avatar} alt={sub.subscribedChannel.username} className="w-6 h-6 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold">
+                          {sub.subscribedChannel.username.charAt(0).toUpperCase()}
+                        </div>
                       )}
                     </div>
-                    <span className="text-sm truncate flex-1 text-left">{channel.name}</span>
+                    <span className="text-sm truncate flex-1 text-left">{sub.subscribedChannel.fullName}</span>
                   </button>
                 ))}
-                <button className="w-full px-6 py-2 text-sm text-gray-400 hover:bg-zinc-900 text-left">
-                  Show 15 more
-                </button>
+                {subscribedChannels.length === 0 && (
+                  <div className="px-6 py-2 text-sm text-gray-500">No subscriptions yet</div>
+                )}
+                {subscribedChannels.length > 5 && (
+                  <button className="w-full px-6 py-2 text-sm text-gray-400 hover:bg-zinc-900 text-left">
+                    Show more
+                  </button>
+                )}
               </div>
             )}
           </div>
