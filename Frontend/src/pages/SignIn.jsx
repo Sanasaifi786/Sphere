@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function SignIn() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
     const [data, setData] = useState({
         fullName: '',
         username: '',
@@ -48,6 +51,8 @@ function SignIn() {
             }
 
             console.log('Success:', result);
+            login(result.data);
+            navigate(`/c/${result.data.username}`);
             setData({
                 fullName: '',
                 username: '',

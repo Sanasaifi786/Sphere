@@ -1,8 +1,11 @@
 import { useState } from "react";
 import FormField from "../components/FormField";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     email: '',
     password: ''
@@ -31,9 +34,9 @@ function Login() {
         return;
       }
       console.log('Login success:', result);
-      // Store tokens if needed, e.g., localStorage.setItem('accessToken', result.data.accessToken);
-      alert('Login successful!');
-      // Redirect or update UI here
+      login(result.data.user);
+      localStorage.setItem('accessToken', result.data.accessToken);
+      navigate(`/c/${result.data.user.username}`);
     } catch (error) {
       console.error('Error:', error);
       alert('An unexpected error occurred.');

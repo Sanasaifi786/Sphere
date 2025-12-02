@@ -6,6 +6,7 @@ import CategoryPills from './components/CategoryPills'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import SignIn from './pages/SignIn'
+import Channel from './pages/Channel'
 import './App.css'
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignIn />} />
+              <Route path="/c/:username" element={<Channel />} />
             </Routes>
           </div>
         </div>
