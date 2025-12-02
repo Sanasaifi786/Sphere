@@ -7,6 +7,8 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import SignIn from './pages/SignIn'
 import Channel from './pages/Channel'
+import UploadVideo from './pages/UploadVideo'
+import EditVideo from './pages/EditVideo'
 import './App.css'
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignIn />} />
               <Route path="/c/:username" element={<Channel />} />
+              <Route path="/upload" element={<UploadVideo />} />
+              <Route path="/edit/:videoId" element={<EditVideo />} />
             </Routes>
           </div>
         </div>

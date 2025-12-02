@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Search, Mic, Menu, User, Star, LogOut, Settings, HelpCircle, LogIn } from 'lucide-react';
+import { Search, Mic, Menu, User, Star, LogOut, Settings, HelpCircle, LogIn, Video } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const Navbar = ({ toggleSidebar }) => {
@@ -70,6 +70,11 @@ const Navbar = ({ toggleSidebar }) => {
 
             {/* Right Section: Login */}
             <div className="flex items-center gap-4">
+                {user && (
+                    <Link to="/upload" className="p-2 hover:bg-gray-800 rounded-full" title="Upload Video">
+                        <Video size={24} />
+                    </Link>
+                )}
                 {user ? (
                     <div className="group relative" ref={profileDropdownRef}>
                         <div
