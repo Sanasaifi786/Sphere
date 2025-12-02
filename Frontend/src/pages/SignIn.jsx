@@ -9,10 +9,6 @@ function SignIn() {
         password: '',
         confirmPassword: ''
     });
-    const [files, setFiles] = useState({
-        avatar: null,
-        coverImage: null
-    });
 
     const handleChange = (e) => {
         setData({
@@ -21,34 +17,15 @@ function SignIn() {
         });
     };
 
-    const handleFileChange = (e) => {
-        const { name, files: selectedFiles } = e.target;
-        setFiles(prevFiles => ({
-            ...prevFiles,
-            [name]: selectedFiles[0]
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (!files.avatar) {
-                alert('Avatar is required!');
-                return;
-            }
-            const formData = new FormData();
-            formData.append('fullName', data.fullName);
-            formData.append('username', data.username);
-            formData.append('email', data.email);
-            formData.append('password', data.password);
-            formData.append('confirmPassword', data.confirmPassword);
-            formData.append('avatar', files.avatar);
-            if (files.coverImage) {
-                formData.append('coverImage', files.coverImage);
-            }
             const response = await fetch('http://localhost:8000/api/v1/users/register', {
                 method: 'POST',
-                body: formData,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
             });
             let result;
             try {
@@ -77,10 +54,6 @@ function SignIn() {
                 email: '',
                 password: '',
                 confirmPassword: ''
-            });
-            setFiles({
-                avatar: null,
-                coverImage: null
             });
             alert('User registered successfully!');
         } catch (error) {
@@ -111,33 +84,6 @@ function SignIn() {
                                 <input type="email" name="email" value={data.email} onChange={handleChange} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="email" placeholder="Enter Your Email" aria-label="Email address" required />
                             </div>
                             <div className="space-y-2">
-                                <label htmlFor="avatar" className="text-sm font-medium leading-none">
-                                    Avatar (Required)
-                                </label>
-                                <input
-                                    type="file"
-                                    name="avatar"
-                                    onChange={handleFileChange}
-                                    accept="image/*"
-                                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                                    id="avatar"
-                                    required
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label htmlFor="coverImage" className="text-sm font-medium leading-none">
-                                    Cover Image (Optional)
-                                </label>
-                                <input
-                                    type="file"
-                                    name="coverImage"
-                                    onChange={handleFileChange}
-                                    accept="image/*"
-                                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
-                                    id="coverImage"
-                                />
-                            </div>
-                            <div className="space-y-2">
                                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="password">Password</label>
                                 <div className="relative">
                                     <input type="password" name="password" value={data.password} onChange={handleChange} className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" id="password" placeholder="Enter Your Password" aria-label="Password" required />
@@ -165,7 +111,7 @@ function SignIn() {
                             </svg>Continue with Google</button>
                     </div>
                     <div className="items-center p-6 pt-0 flex flex-col space-y-4">
-                        <div className="text-sm text-muted-foreground text-center">Don't have an account? <Link className="text-primary hover:underline" to="/login">Login</Link>
+                        <div className="text-sm text-muted-foreground text-center">Do have an account? <Link className="text-primary hover:underline" to="/login">Login</Link>
                         </div>
                     </div>
                 </div>

@@ -1,21 +1,61 @@
+import { useState } from "react";
 import FormField from "../components/FormField";
 import { Link } from "react-router-dom";
 
 function Login() {
+  const [data, setData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const handleChange = (e) => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:8000/api/v1/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        alert(result.message || 'Login failed');
+        return;
+      }
+      console.log('Login success:', result);
+      // Store tokens if needed, e.g., localStorage.setItem('accessToken', result.data.accessToken);
+      alert('Login successful!');
+      // Redirect or update UI here
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An unexpected error occurred.');
+    }
+  };
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container m-auto px-4 py-6 h-screen mt-20">
       <div className="flex items-center justify-center px-4 py-8">
         <div className="rounded-xl border bg-card text-card-foreground shadow w-full max-w-md">
           <div className="flex flex-col p-6 space-y-4 text-center">
             <h3 className="tracking-tight text-3xl font-bold">Login</h3>
           </div>
           <div className="p-6 pt-0 space-y-4">
-            <form className="space-y-4" aria-label="Login form">
+            <form className="space-y-4" aria-label="Login form" onSubmit={handleSubmit}>
               <FormField
                 id="email"
                 label="Email"
                 type="email"
+                name="email"
+                value={data.email}
+                onChange={handleChange}
                 placeholder="Enter Your Email"
                 required
                 ariaLabel="Email address"
@@ -24,6 +64,9 @@ function Login() {
                 id="password"
                 label="Password"
                 type="password"
+                name="password"
+                value={data.password}
+                onChange={handleChange}
                 placeholder="Enter Your Password"
                 required
                 ariaLabel="Password"
@@ -41,7 +84,7 @@ function Login() {
                 type="submit"
                 aria-label="Sign in"
               >
-                Sign In
+                Login
               </button>
             </form>
             <div className="relative">
