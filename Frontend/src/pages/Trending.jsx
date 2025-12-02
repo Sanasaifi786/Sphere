@@ -167,7 +167,7 @@ const VideoCard = ({ video }) => {
                             alt={video.ownerDetails?.username}
                             className="w-10 h-10 rounded-full border border-white/50 object-cover"
                         />
-                        <Link to={`/c/${video.ownerDetails?.username}`} className="font-semibold hover:underline">
+                        <Link to={`/c/${video.ownerDetails?.username}`} className="font-semibold hover:underline" style={{ textDecoration: 'none', color: 'white' }}>
                             @{video.ownerDetails?.username || "unknown"}
                         </Link>
                         <button className="bg-white text-black text-xs font-bold px-3 py-1.5 rounded-full hover:bg-gray-200 transition">

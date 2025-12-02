@@ -8,7 +8,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js"
 
 
 const getAllVideos = asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
+    const { page = 1, limit = 100, query, sortBy, sortType, userId } = req.query
     const pipeline = [];
 
     // 1. Search by query (title or description)
