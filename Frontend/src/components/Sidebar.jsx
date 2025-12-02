@@ -58,6 +58,8 @@ function Sidebar({ sidebarOpen }) {
                 setActiveTab(item.id);
                 if (item.id === 'home') {
                   navigate('/');
+                } else if (item.id === 'trending') {
+                  navigate('/trending');
                 }
               }}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id

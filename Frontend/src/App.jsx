@@ -9,6 +9,7 @@ import SignIn from './pages/SignIn'
 import Channel from './pages/Channel'
 import UploadVideo from './pages/UploadVideo'
 import EditVideo from './pages/EditVideo'
+import Trending from './pages/Trending'
 import './App.css'
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
               <Route path="/c/:username" element={<Channel />} />
               <Route path="/upload" element={<UploadVideo />} />
               <Route path="/edit/:videoId" element={<EditVideo />} />
+              <Route path="/trending" element={<Trending />} />
             </Routes>
           </div>
         </div>
