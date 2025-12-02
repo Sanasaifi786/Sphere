@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getAllVideos } from '../api/video.api';
+import { toggleVideoLike } from '../api/like.api';
 import { Heart, MessageCircle, Share2, MoreVertical, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Trending = () => {
     const [videos, setVideos] = useState([]);
@@ -42,6 +44,9 @@ const VideoCard = ({ video }) => {
     const videoRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
+    const [isLiked, setIsLiked] = useState(video.isLiked);
+    const [likesCount, setLikesCount] = useState(video.likesCount || 0);
+    const { user } = useAuth();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -84,6 +89,22 @@ const VideoCard = ({ video }) => {
         setIsMuted(videoRef.current.muted);
     };
 
+    const handleLike = async () => {
+        if (!user) {
+            alert("Please login to like videos");
+            return;
+        }
+        try {
+            const response = await toggleVideoLike(video._id);
+            if (response.success) {
+                setIsLiked(!isLiked);
+                setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
+            }
+        } catch (error) {
+            console.error("Error liking video:", error);
+        }
+    };
+
     return (
         <div className="h-full w-full snap-start relative flex justify-center bg-black">
             <div className="relative h-full w-full max-w-[450px] bg-gray-900">
@@ -113,10 +134,13 @@ const VideoCard = ({ video }) => {
                 {/* Right Side Actions */}
                 <div className="absolute bottom-20 right-2 flex flex-col gap-6 items-center z-10">
                     <div className="flex flex-col items-center gap-1">
-                        <button className="p-3 bg-gray-800/60 rounded-full text-white hover:bg-gray-700 transition">
-                            <Heart size={28} />
+                        <button
+                            onClick={handleLike}
+                            className={`p-3 rounded-full transition ${isLiked ? 'bg-red-500 text-white' : 'bg-gray-800/60 text-white hover:bg-gray-700'}`}
+                        >
+                            <Heart size={28} className={isLiked ? 'fill-current' : ''} />
                         </button>
-                        <span className="text-white text-xs font-medium">Like</span>
+                        <span className="text-white text-xs font-medium">{likesCount}</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                         <button className="p-3 bg-gray-800/60 rounded-full text-white hover:bg-gray-700 transition">

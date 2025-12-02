@@ -9,7 +9,6 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js"
 
 const getAllVideos = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
-    //TODO: get all videos based on query, sort, pagination
     const pipeline = [];
 
     // 1. Search by query (title or description)
@@ -36,10 +35,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
         });
     }
 
-    // 3. Filter by isPublished (optional: only show published videos to public)
-    // For now, let's assume we show all if userId is provided (owner viewing own videos), 
-    // or only published otherwise. But requirements might vary. 
-    // Let's stick to simple filtering for now.
+    // 3. Filter by isPublished
     pipeline.push({ $match: { isPublished: true } });
 
 
@@ -54,7 +50,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
         pipeline.push({ $sort: { createdAt: -1 } }); // Default sort by newest
     }
 
-    // 5. Lookup owner details (optional but good for UI)
+    // 5. Lookup owner details
     pipeline.push({
         $lookup: {
             from: "users",
@@ -75,6 +71,36 @@ const getAllVideos = asyncHandler(async (req, res) => {
     pipeline.push({
         $unwind: "$ownerDetails"
     })
+
+    // 6. Lookup Likes
+    pipeline.push({
+        $lookup: {
+            from: "likes",
+            localField: "_id",
+            foreignField: "video",
+            as: "likes"
+        }
+    });
+
+    pipeline.push({
+        $addFields: {
+            likesCount: { $size: "$likes" },
+            isLiked: {
+                $cond: {
+                    if: { $in: [req.user?._id, "$likes.likedBy"] },
+                    then: true,
+                    else: false
+                }
+            }
+        }
+    });
+
+    // Remove likes array to keep response clean
+    pipeline.push({
+        $project: {
+            likes: 0
+        }
+    });
 
     const options = {
         page: parseInt(page, 10),
@@ -139,19 +165,76 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params
-    //TODO: get video by id
     if (!isValidObjectId(videoId)) {
         throw new ApiError(400, "Invalid video id")
     }
 
-    const video = await Video.findById(videoId);
+    const video = await Video.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(videoId)
+            }
+        },
+        {
+            $lookup: {
+                from: "likes",
+                localField: "_id",
+                foreignField: "video",
+                as: "likes"
+            }
+        },
+        {
+            $addFields: {
+                likesCount: {
+                    $size: "$likes"
+                },
+                isLiked: {
+                    $cond: {
+                        if: { $in: [req.user?._id, "$likes.likedBy"] },
+                        then: true,
+                        else: false
+                    }
+                }
+            }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner",
+                pipeline: [
+                    {
+                        $project: {
+                            username: 1,
+                            fullName: 1,
+                            avatar: 1,
+                            subscribersCount: 1
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            $addFields: {
+                owner: {
+                    $first: "$owner"
+                }
+            }
+        },
+        {
+            $project: {
+                likes: 0
+            }
+        }
+    ]);
 
-    if (!video) {
+    if (!video?.length) {
         throw new ApiError(404, "Video not found")
     }
 
     return res.status(200).json(
-        new ApiResponse(200, video, "Video fetched successfully")
+        new ApiResponse(200, video[0], "Video fetched successfully")
     )
 })
 

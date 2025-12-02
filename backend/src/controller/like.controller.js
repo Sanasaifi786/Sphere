@@ -95,10 +95,16 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 
 const getLikedVideos = asyncHandler(async (req, res) => {
     //TODO: get all liked videos
+    console.log("Fetching liked videos for user:", req.user?._id);
+
+    if (!req.user?._id) {
+        throw new ApiError(401, "User not authenticated");
+    }
+
     const likedVideos = await Like.aggregate([
         {
             $match: {
-                likedBy: new mongoose.Types.ObjectId(req.user?._id),
+                likedBy: new mongoose.Types.ObjectId(req.user._id),
                 video: {
                     $exists: true
                 }
@@ -146,6 +152,8 @@ const getLikedVideos = asyncHandler(async (req, res) => {
             }
         }
     ])
+
+    console.log("Liked videos found:", likedVideos.length);
 
     return res
         .status(200)

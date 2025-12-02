@@ -94,7 +94,12 @@ function Sidebar({ sidebarOpen }) {
           {libraryItems.map(item => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => {
+                setActiveTab(item.id);
+                if (item.id === 'liked') {
+                  navigate('/liked-videos');
+                }
+              }}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id
                 ? 'bg-zinc-900 text-white border-r-4 border-white'
                 : 'text-white hover:bg-zinc-900'

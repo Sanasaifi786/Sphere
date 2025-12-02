@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getVideoById, getAllVideos } from '../api/video.api';
+import { toggleVideoLike } from '../api/like.api';
 import { ThumbsUp, ThumbsDown, Share2, MoreHorizontal, Bell } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const VideoPlayer = () => {
     const { videoId } = useParams();
+    const { user } = useAuth();
     const [video, setVideo] = useState(null);
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isLiked, setIsLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,6 +24,9 @@ const VideoPlayer = () => {
                     getAllVideos()
                 ]);
                 setVideo(videoResponse.data);
+                setIsLiked(videoResponse.data.isLiked);
+                setLikesCount(videoResponse.data.likesCount);
+
                 // Filter out current video from recommendations
                 const allVideos = recommendationsResponse.data.docs;
                 setRecommendations(allVideos.filter(v => v._id !== videoId));
@@ -33,6 +41,22 @@ const VideoPlayer = () => {
         // Scroll to top when videoId changes
         window.scrollTo(0, 0);
     }, [videoId]);
+
+    const handleLike = async () => {
+        if (!user) {
+            alert("Please login to like videos");
+            return;
+        }
+        try {
+            const response = await toggleVideoLike(videoId);
+            if (response.success) {
+                setIsLiked(!isLiked);
+                setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
+            }
+        } catch (error) {
+            console.error("Error liking video:", error);
+        }
+    };
 
     const formatTimeAgo = (dateString) => {
         const date = new Date(dateString);
@@ -106,9 +130,12 @@ const VideoPlayer = () => {
                         {/* Actions Buttons */}
                         <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
                             <div className="flex items-center bg-[#272727] rounded-full overflow-hidden">
-                                <button className="flex items-center gap-2 px-4 py-2 hover:bg-[#3f3f3f] transition-colors border-r border-[#3f3f3f] text-white text-sm font-medium">
-                                    <ThumbsUp size={20} />
-                                    <span>{video.likes || 0}</span>
+                                <button
+                                    onClick={handleLike}
+                                    className={`flex items-center gap-2 px-4 py-2 hover:bg-[#3f3f3f] transition-colors border-r border-[#3f3f3f] text-sm font-medium ${isLiked ? 'text-blue-500' : 'text-white'}`}
+                                >
+                                    <ThumbsUp size={20} className={isLiked ? 'fill-current' : ''} />
+                                    <span>{likesCount}</span>
                                 </button>
                                 <button className="px-4 py-2 hover:bg-[#3f3f3f] transition-colors text-white">
                                     <ThumbsDown size={20} />
@@ -142,7 +169,7 @@ const VideoPlayer = () => {
                         <h3 className="text-xl font-bold mb-4">Comments</h3>
                         <div className="flex gap-4 mb-6">
                             <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">
-                                U
+                                {user ? (user.fullName ? user.fullName.charAt(0).toUpperCase() : user.username.charAt(0).toUpperCase()) : 'U'}
                             </div>
                             <input
                                 type="text"
