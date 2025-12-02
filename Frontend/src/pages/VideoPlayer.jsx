@@ -152,7 +152,7 @@ const VideoPlayer = () => {
                     <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 gap-4">
                         {/* Channel Info */}
                         <div className="flex items-center gap-4">
-                            <Link to={`/c/${video.owner?.username}`} className="flex-shrink-0">
+                            <Link to={`/c/${video.owner?.username}`} className="flex-shrink-0" style={{ textDecoration: 'none' }}>
                                 <img
                                     src={video.owner?.avatar || "https://via.placeholder.com/40"}
                                     alt={video.owner?.username}
@@ -160,7 +160,7 @@ const VideoPlayer = () => {
                                 />
                             </Link>
                             <div className="flex flex-col">
-                                <Link to={`/c/${video.owner?.username}`} className="font-semibold text-white hover:text-gray-300">
+                                <Link to={`/c/${video.owner?.username}`} className="font-semibold text-white hover:text-gray-300" style={{ textDecoration: 'none' }}>
                                     {video.owner?.username || "Unknown User"}
                                 </Link>
                                 <span className="text-xs text-gray-400">
@@ -234,7 +234,7 @@ const VideoPlayer = () => {
                 {/* Sidebar - Recommendations */}
                 <div className="lg:w-[350px] xl:w-[400px] flex-shrink-0 flex flex-col gap-3">
                     {recommendations.map((recVideo) => (
-                        <Link to={`/video/${recVideo._id}`} key={recVideo._id} className="flex gap-2 group cursor-pointer">
+                        <Link to={`/video/${recVideo._id}`} key={recVideo._id} className="flex gap-2 group cursor-pointer" style={{ textDecoration: 'none' }}>
                             <div className="relative w-40 h-24 flex-shrink-0 rounded-lg overflow-hidden">
                                 <img
                                     src={recVideo.thumbnail}
