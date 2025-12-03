@@ -112,6 +112,8 @@ function Sidebar({ sidebarOpen }) {
                 setActiveTab(item.id);
                 if (item.id === 'liked') {
                   navigate('/liked-videos');
+                } else if (item.id === 'history') {
+                  navigate('/history');
                 }
               }}
               className={`w-full flex items-center gap-4 px-6 py-3 transition-colors ${activeTab === item.id

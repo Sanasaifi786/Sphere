@@ -12,6 +12,7 @@ import EditVideo from './pages/EditVideo'
 import Trending from './pages/Trending'
 import VideoPlayer from './pages/VideoPlayer'
 import LikedVideos from './pages/LikedVideos'
+import WatchHistory from './pages/WatchHistory'
 import './App.css'
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
               <Route path="/trending" element={<Trending />} />
               <Route path="/video/:videoId" element={<VideoPlayer />} />
               <Route path="/liked-videos" element={<LikedVideos />} />
+              <Route path="/history" element={<WatchHistory />} />
             </Routes>
           </div>
         </div>

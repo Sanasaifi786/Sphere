@@ -395,7 +395,6 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
 })
 
 const getWatchHistory = asyncHandler(async (req, res) => {
-  // req.user._id // get string mongoose behind the scene
   const user = await User.aggregate([
     {
       $match: {
@@ -404,14 +403,14 @@ const getWatchHistory = asyncHandler(async (req, res) => {
     },
     {
       $lookup: {
-        from: "Video",
-        localField: "WatchHistory",
+        from: "videos",
+        localField: "watchHistory",
         foreignField: "_id",
         as: "watchHistory",
         pipeline: [
           {
             $lookup: {
-              from: "user",
+              from: "users",
               localField: "owner",
               foreignField: "_id",
               as: "owner",
