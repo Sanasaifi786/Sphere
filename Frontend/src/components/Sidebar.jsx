@@ -57,7 +57,7 @@ function Sidebar({ sidebarOpen }) {
   ];
 
   return (
-    <div className={`h-full bg-black border-r border-gray-800 transition-all duration-300 overflow-y-auto z-30 shrink-0 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
+    <div className={`h-full bg-black border-r border-gray-800 transition-all duration-300 overflow-y-auto z-30 shrink-0 scrollbar-hide pb-4 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
       <nav className="py-2">
         {/* Main Navigation */}
         <div className="mb-2 ml-2">
