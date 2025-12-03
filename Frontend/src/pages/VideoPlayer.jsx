@@ -57,9 +57,12 @@ const VideoPlayer = () => {
         try {
             const response = await toggleVideoLike(videoId);
             if (response.success) {
-                setIsLiked(!isLiked);
-                setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
-                if (isDisliked) setIsDisliked(false);
+                setIsLiked(response.data.liked);
+                setLikesCount(prev => response.data.liked ? prev + 1 : prev - 1);
+
+                if (response.data.liked && isDisliked) {
+                    setIsDisliked(false);
+                }
             }
         } catch (error) {
             console.error("Error liking video:", error);
@@ -74,8 +77,9 @@ const VideoPlayer = () => {
         try {
             const response = await toggleVideoDislike(videoId);
             if (response.success) {
-                setIsDisliked(!isDisliked);
-                if (isLiked) {
+                setIsDisliked(response.data.disliked);
+
+                if (response.data.disliked && isLiked) {
                     setIsLiked(false);
                     setLikesCount(prev => prev - 1);
                 }

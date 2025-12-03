@@ -14,6 +14,7 @@ function Sidebar({ sidebarOpen }) {
   const [activeTab, setActiveTab] = useState('home');
   const [showSubscriptions, setShowSubscriptions] = useState(true);
   const [subscribedChannels, setSubscribedChannels] = useState([]);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchSubscribedChannels = async () => {
@@ -148,33 +149,49 @@ function Sidebar({ sidebarOpen }) {
             </button>
             {showSubscriptions && (
               <div>
-                {subscribedChannels.map(sub => (
-                  <button
-                    key={sub.subscribedChannel._id}
-                    onClick={() => {
-                      setActiveTab(`channel-${sub.subscribedChannel._id}`);
-                      navigate(`/c/${sub.subscribedChannel.username}`);
-                    }}
-                    className="w-full flex items-center gap-3 px-6 py-2 text-white hover:bg-zinc-900 transition-colors"
-                  >
-                    <div className="relative">
-                      {sub.subscribedChannel.avatar ? (
-                        <img src={sub.subscribedChannel.avatar} alt={sub.subscribedChannel.username} className="w-6 h-6 rounded-full object-cover" />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold">
-                          {sub.subscribedChannel.username.charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                    </div>
-                    <span className="text-sm truncate flex-1 text-left">{sub.subscribedChannel.fullName}</span>
-                  </button>
-                ))}
+                {subscribedChannels
+                  .filter(sub => sub.subscribedChannel) // Filter out invalid subscriptions
+                  .slice(0, isExpanded ? undefined : 5)
+                  .map(sub => (
+                    <button
+                      key={sub.subscribedChannel._id}
+                      onClick={() => {
+                        setActiveTab(`channel-${sub.subscribedChannel._id}`);
+                        navigate(`/c/${sub.subscribedChannel.username}`);
+                      }}
+                      className="w-full flex items-center gap-3 px-6 py-2 text-white hover:bg-zinc-900 transition-colors"
+                    >
+                      <div className="relative">
+                        {sub.subscribedChannel.avatar ? (
+                          <img src={sub.subscribedChannel.avatar} alt={sub.subscribedChannel.username} className="w-6 h-6 rounded-full object-cover" />
+                        ) : (
+                          <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-xs font-bold">
+                            {sub.subscribedChannel.username.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                      <span className="text-sm truncate flex-1 text-left">{sub.subscribedChannel.fullName}</span>
+                    </button>
+                  ))}
                 {subscribedChannels.length === 0 && (
                   <div className="px-6 py-2 text-sm text-gray-500">No subscriptions yet</div>
                 )}
-                {subscribedChannels.length > 5 && (
-                  <button className="w-full px-6 py-2 text-sm text-gray-400 hover:bg-zinc-900 text-left">
-                    Show more
+                {subscribedChannels.filter(sub => sub.subscribedChannel).length > 5 && (
+                  <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="w-full px-6 py-2 text-sm text-gray-400 hover:bg-zinc-900 text-left flex items-center gap-2"
+                  >
+                    {isExpanded ? (
+                      <>
+                        <ChevronDown size={16} className="rotate-180" />
+                        Show less
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown size={16} />
+                        Show more
+                      </>
+                    )}
                   </button>
                 )}
               </div>
